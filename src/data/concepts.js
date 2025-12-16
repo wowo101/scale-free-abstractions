@@ -56,8 +56,8 @@ export const coreInsight = {
 export const framingContent = [
   {
     id: 'scale-free',
-    title: 'Scale-Free Abstractions',
-    content: `These patterns appear at every scale—the same attractor dynamics govern chemical reactions and climate systems; the same fitness landscape topology shapes protein folding and cultural evolution; the same criticality emerges in sandpiles and neural networks.`,
+    title: 'Why These Four?',
+    content: `Each visualization captures a different facet of how systems maintain themselves. Cellular automata show how local rules generate global complexity. Dynamical systems reveal the geometry of long-term behavior—the basins and attractors that channel possibility. Criticality demonstrates how systems tune themselves to the edge of chaos. Fitness landscapes map the topology that any search process must navigate. Together, they form a toolkit for seeing the deep structure beneath surface phenomena.`,
   },
   {
     id: 'information-closure',
