@@ -4,36 +4,80 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This repository contains standalone React visualization components exploring concepts from complex systems theory, dynamical systems, and self-organized criticality. Each component is a self-contained interactive simulation.
+Scale-Free Abstractions Explorer - A unified React application showcasing interactive visualizations of complex systems theory, dynamical systems, and self-organized criticality. The application features a gallery landing page with educational framing and four distinct visualization modules.
 
-## Components
+## Tech Stack
 
-- **CellularAutomataExplorer.jsx** - Elementary cellular automata (Wolfram's 256 rules) with classification by complexity class (I-IV), entropy metrics, and rule transition tables
-- **attractor-explorer.jsx** - 3D dynamical systems visualization showing point attractors, limit cycles, and strange attractors (Lorenz/Van der Pol systems) with real-time classification
-- **criticality-simulation.jsx** - Bak-Tang-Wiesenfeld sandpile model demonstrating self-organized criticality with power-law avalanche distributions
-- **fitness-landscape.jsx** - Configurable 3D/2D fitness landscape generator for exploring optimization topology (peaks, valleys, ruggedness)
+- **React 18** with hooks
+- **Vite 5** for build tooling
+- **React Router 6** for navigation
+- **Tailwind CSS 3** for styling
+- **HTML5 Canvas** for rendering (no WebGL)
 
-## Architecture
+## Project Structure
 
-Each component is:
-- A single JSX file with no external dependencies beyond React
-- Self-contained with inline styles (no CSS files)
-- Uses HTML5 Canvas for rendering (not WebGL)
-- Designed for full-viewport display
-- Contains its own physics/simulation logic, color schemes, and UI controls
+```
+src/
+├── components/
+│   ├── shared/           # Reusable UI components
+│   │   ├── GlassPanel.jsx
+│   │   ├── ParameterSlider.jsx
+│   │   ├── Button.jsx
+│   │   ├── MetricBar.jsx
+│   │   ├── PlaybackControls.jsx
+│   │   ├── Tooltip.jsx
+│   │   ├── BackButton.jsx
+│   │   └── index.js
+│   └── gallery/
+│       └── GalleryCard.jsx
+├── hooks/                # Custom React hooks
+│   ├── useAnimationFrame.js
+│   ├── useViewportSize.js
+│   ├── useCanvasSetup.js
+│   └── useDragRotation.js
+├── visualizations/       # Visualization modules
+│   ├── CellularAutomata/
+│   ├── DynamicalSystems/
+│   ├── Criticality/
+│   └── FitnessLandscape/
+├── pages/                # Route page wrappers
+├── data/concepts.js      # Gallery content metadata
+├── styles/
+│   ├── theme.js          # Design tokens
+│   └── globals.css       # Tailwind + custom styles
+├── App.jsx               # Router setup
+└── main.jsx              # Entry point
+```
 
-Common patterns across components:
-- `useRef` for canvas elements and mutable simulation state
-- `requestAnimationFrame` loops for animation
-- Floating glassmorphism control panels with sliders
-- Educational tooltips explaining scientific concepts
+## Commands
 
-## Development
+```bash
+npm install        # Install dependencies
+npm run dev        # Start dev server (http://localhost:3000)
+npm run build      # Production build to dist/
+npm run preview    # Preview production build
+```
 
-These are standalone React components. To use them:
-1. Import into any React application
-2. No build configuration specific to this repo
-3. Each component exports a default React component
+## Visualizations
+
+1. **Cellular Automata** (`/cellular-automata`) - Wolfram's 256 elementary rules with complexity classification (I-IV), entropy metrics, rule transition tables
+2. **Dynamical Systems** (`/attractors`) - 3D attractor visualization showing fixed points, limit cycles, strange attractors with real-time classification
+3. **Self-Organized Criticality** (`/criticality`) - BTW sandpile model with power-law avalanche distributions
+4. **Fitness Landscapes** (`/fitness-landscape`) - Configurable 3D/2D landscapes for exploring optimization topology
+
+## Design System
+
+- **Glassmorphism UI**: Semi-transparent panels with backdrop blur
+- **Accent colors**: Each visualization has a unique accent (zinc, green, cyan, indigo)
+- **Design tokens**: Centralized in `src/styles/theme.js`
+- **Utility-first CSS**: Tailwind with custom `.glass-panel` component class
+
+## Architecture Patterns
+
+- Shared components via barrel export (`components/shared/index.js`)
+- Custom hooks for animation loops, viewport tracking, canvas setup, drag rotation
+- Each visualization folder contains: `index.jsx`, `utils.js`, `data.js`, and sub-components
+- Page wrappers add BackButton navigation to visualizations
 
 ## Scientific Context
 
@@ -43,3 +87,13 @@ The visualizations demonstrate:
 - **Scale-free behavior** and power laws
 - **Attractor dynamics** in nonlinear systems
 - **Fitness landscape topology** and search strategies
+
+## Legacy Files
+
+The root directory contains the original standalone JSX files for reference:
+- `CellularAutomataExplorer.jsx`
+- `attractor-explorer.jsx`
+- `criticality-simulation.jsx`
+- `fitness-landscape.jsx`
+
+These have been migrated to `src/visualizations/` with shared components.
