@@ -71,39 +71,8 @@ export function generateLandscape(params, seed = 42) {
   return heights;
 }
 
-// Color mapping
-export function getColor(value, colorScheme) {
-  const schemes = {
-    viridis: [
-      [68, 1, 84], [72, 36, 117], [65, 68, 135], [53, 95, 141],
-      [42, 120, 142], [33, 145, 140], [34, 168, 132], [68, 191, 112],
-      [122, 209, 81], [189, 223, 38], [253, 231, 37]
-    ],
-    thermal: [
-      [0, 0, 50], [20, 0, 80], [60, 0, 110], [100, 20, 100],
-      [140, 40, 70], [180, 60, 40], [220, 100, 20], [240, 150, 30],
-      [255, 200, 80], [255, 240, 150]
-    ],
-    terrain: [
-      [40, 70, 120], [50, 120, 100], [70, 150, 80], [120, 170, 80],
-      [170, 180, 100], [200, 170, 120], [180, 140, 110], [200, 190, 180],
-      [230, 230, 230], [255, 255, 255]
-    ]
-  };
-  
-  const colors = schemes[colorScheme] || schemes.viridis;
-  const idx = Math.min(value, 0.999) * (colors.length - 1);
-  const i = Math.floor(idx);
-  const t = idx - i;
-  const c1 = colors[i];
-  const c2 = colors[Math.min(i + 1, colors.length - 1)];
-  
-  return [
-    Math.round(c1[0] + t * (c2[0] - c1[0])),
-    Math.round(c1[1] + t * (c2[1] - c1[1])),
-    Math.round(c1[2] + t * (c2[2] - c1[2]))
-  ];
-}
+// Re-export color utilities from shared module
+export { getColor } from '../../utils/colors';
 
 // Calculate statistics
 export function calculateStats(heights, resolution) {

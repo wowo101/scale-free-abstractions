@@ -13,7 +13,7 @@ export const visualizations = [
   },
   {
     id: 'dynamical-systems',
-    title: 'Dynamical Systems',
+    title: 'Types of Attractors',
     subtitle: 'Attractors & Phase Space',
     description: 'Trajectories in state space reveal the geometry of possible behaviors: fixed points, limit cycles, and strange attractors.',
     tags: ['chaos', 'attractors', 'nonlinearity'],

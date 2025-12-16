@@ -1,4 +1,5 @@
 // Shared components re-export
+export { default as BackButton } from './BackButton';
 export { default as GlassPanel } from './GlassPanel';
 export { default as ParameterSlider } from './ParameterSlider';
 export { default as Tooltip, PositionedTooltip } from './Tooltip';

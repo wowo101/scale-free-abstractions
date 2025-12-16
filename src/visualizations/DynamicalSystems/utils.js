@@ -1,19 +1,5 @@
-// Viridis color scale
-export function viridis(t) {
-  t = Math.max(0, Math.min(1, t));
-  const c = [
-    [68,1,84], [72,35,116], [64,67,135], [52,94,141], [41,120,142],
-    [32,144,140], [34,167,132], [68,190,112], [121,209,81], [189,222,38], [253,231,36]
-  ];
-  const idx = t * (c.length - 1);
-  const i = Math.floor(idx), f = idx - i;
-  if (i >= c.length - 1) return c[c.length - 1];
-  return [
-    Math.round(c[i][0] + f * (c[i+1][0] - c[i][0])),
-    Math.round(c[i][1] + f * (c[i+1][1] - c[i][1])),
-    Math.round(c[i][2] + f * (c[i+1][2] - c[i][2]))
-  ];
-}
+// Re-export viridis from shared colors
+export { viridis } from '../../utils/colors';
 
 // 3D projection
 export function project3D(p, rot, scale, off) {

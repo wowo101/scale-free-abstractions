@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Link } from 'react-router-dom';
-import { GlassPanel, ParameterSlider, Button, ButtonGroup } from '../../components/shared';
+import { BackButton, GlassPanel, ParameterSlider, Button, ButtonGroup } from '../../components/shared';
 import { PositionedTooltip } from '../../components/shared/Tooltip';
-import { useViewportSize } from '../../hooks';
+import { useViewportSize, useAnimationFrame } from '../../hooks';
 import { getBucketIndex, getColorForHeight, stateColors, tooltips, chartTooltipText } from './utils';
 import PowerLawChart from './PowerLawChart';
 import PhaseGuide from './PhaseGuide';
@@ -39,10 +38,8 @@ export default function CriticalitySimulation() {
   const canvasRef = useRef(null);
   const gridRef = useRef(null);
   const toppledRef = useRef(null);
-  const animationRef = useRef(null);
   const avalancheInProgressRef = useRef(false);
   const currentAvalancheSizeRef = useRef(0);
-  const frameCountRef = useRef(0);
   const sliderRefs = useRef({});
   
   const { width: viewportWidth, height: viewportHeight } = useViewportSize();
@@ -62,7 +59,6 @@ export default function CriticalitySimulation() {
     currentAvalancheSizeRef.current = 0;
     setAvalancheHistory([]);
     setSizeDistribution([0, 0, 0, 0, 0, 0]);
-    frameCountRef.current = 0;
   }, []);
 
   useEffect(() => {
@@ -245,31 +241,16 @@ export default function CriticalitySimulation() {
     draw();
   }, [doTopplePass, dropGrains, dropRate, threshold, calculateStats, draw]);
 
-  // Animation loop
-  useEffect(() => {
-    if (!isRunning) return;
-    
-    const baseInterval = 50;
-    const frameInterval = baseInterval / SPEED;
-    let lastTime = 0;
-    
-    const animate = (currentTime) => {
-      if (currentTime - lastTime >= frameInterval) {
-        simulationStep();
-        lastTime = currentTime;
-        frameCountRef.current++;
-      }
-      animationRef.current = requestAnimationFrame(animate);
-    };
-    
-    animationRef.current = requestAnimationFrame(animate);
-    
-    return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-      }
-    };
-  }, [isRunning, simulationStep]);
+  // Animation loop using useAnimationFrame hook
+  const baseInterval = 50;
+  const targetFps = 1000 / (baseInterval / SPEED);
+  
+  useAnimationFrame({
+    callback: simulationStep,
+    fps: targetFps,
+    paused: !isRunning,
+    deps: [simulationStep],
+  });
 
   const handleSliderHover = (key, ref) => {
     if (ref?.current) {
@@ -306,15 +287,7 @@ export default function CriticalitySimulation() {
         {/* Title row with info icon */}
         <div className="flex justify-between items-start mb-3">
           <div className="flex items-center gap-2">
-            <Link
-              to="/"
-              className="w-6 h-6 rounded flex items-center justify-center text-slate-400 hover:text-slate-100 hover:bg-white/10 transition-colors"
-              title="Back to Gallery"
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M19 12H5M12 19l-7-7 7-7" />
-              </svg>
-            </Link>
+            <BackButton />
             <div>
               <h1 className="text-base font-semibold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
                 Sandpile Criticality

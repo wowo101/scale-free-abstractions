@@ -20,32 +20,36 @@ Scale-Free Abstractions Explorer - A unified React application showcasing intera
 src/
 ├── components/
 │   ├── shared/           # Reusable UI components
-│   │   ├── GlassPanel.jsx
-│   │   ├── ParameterSlider.jsx
+│   │   ├── BackButton.jsx
 │   │   ├── Button.jsx
+│   │   ├── GlassPanel.jsx
 │   │   ├── MetricBar.jsx
+│   │   ├── ParameterSlider.jsx
 │   │   ├── PlaybackControls.jsx
 │   │   ├── Tooltip.jsx
-│   │   ├── BackButton.jsx
 │   │   └── index.js
 │   └── gallery/
 │       └── GalleryCard.jsx
 ├── hooks/                # Custom React hooks
 │   ├── useAnimationFrame.js
-│   ├── useViewportSize.js
 │   ├── useCanvasSetup.js
-│   └── useDragRotation.js
+│   ├── useDragRotation.js
+│   ├── useViewportSize.js
+│   └── index.js
+├── utils/
+│   └── colors.js         # Shared color utilities (viridis, getColor)
 ├── visualizations/       # Visualization modules
 │   ├── CellularAutomata/
 │   ├── DynamicalSystems/
 │   ├── Criticality/
 │   └── FitnessLandscape/
-├── pages/                # Route page wrappers
+├── pages/
+│   └── Gallery.jsx       # Main gallery landing page
 ├── data/concepts.js      # Gallery content metadata
 ├── styles/
 │   ├── theme.js          # Design tokens
 │   └── globals.css       # Tailwind + custom styles
-├── App.jsx               # Router setup
+├── App.jsx               # Router setup (direct visualization imports)
 └── main.jsx              # Entry point
 ```
 
@@ -61,7 +65,7 @@ npm run preview    # Preview production build
 ## Visualizations
 
 1. **Cellular Automata** (`/cellular-automata`) - Wolfram's 256 elementary rules with complexity classification (I-IV), entropy metrics, rule transition tables
-2. **Dynamical Systems** (`/attractors`) - 3D attractor visualization showing fixed points, limit cycles, strange attractors with real-time classification
+2. **Types of Attractors** (`/attractors`) - 3D attractor visualization showing fixed points, limit cycles, strange attractors with real-time classification
 3. **Self-Organized Criticality** (`/criticality`) - BTW sandpile model with power-law avalanche distributions
 4. **Fitness Landscapes** (`/fitness-landscape`) - Configurable 3D/2D landscapes for exploring optimization topology
 
@@ -75,9 +79,11 @@ npm run preview    # Preview production build
 ## Architecture Patterns
 
 - Shared components via barrel export (`components/shared/index.js`)
-- Custom hooks for animation loops, viewport tracking, canvas setup, drag rotation
+- Custom hooks for animation loops (`useAnimationFrame`), viewport tracking, drag rotation
+- Shared color utilities in `src/utils/colors.js` (viridis, getColor, COLOR_SCHEMES)
 - Each visualization folder contains: `index.jsx`, `utils.js`, `data.js`, and sub-components
-- Page wrappers add BackButton navigation to visualizations
+- App.jsx imports visualizations directly (no page wrapper layer)
+- BackButton component provides consistent navigation back to gallery
 
 ## Scientific Context
 
@@ -87,13 +93,3 @@ The visualizations demonstrate:
 - **Scale-free behavior** and power laws
 - **Attractor dynamics** in nonlinear systems
 - **Fitness landscape topology** and search strategies
-
-## Legacy Files
-
-The root directory contains the original standalone JSX files for reference:
-- `CellularAutomataExplorer.jsx`
-- `attractor-explorer.jsx`
-- `criticality-simulation.jsx`
-- `fitness-landscape.jsx`
-
-These have been migrated to `src/visualizations/` with shared components.
