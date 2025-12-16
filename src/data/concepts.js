@@ -43,33 +43,74 @@ export const visualizations = [
   },
 ];
 
-export const frameworkThemes = [
+export const heroText = {
+  title: 'Scale-Free Abstractions',
+  subtitle: 'A sensemaking toolkit for complex systems',
+};
+
+export const coreInsight = {
+  statement: 'Existence is the active maintenance of information closure.',
+  elaboration: 'This maintenance has characteristic structure at every scale.',
+};
+
+export const framingContent = [
   {
-    title: 'Emergence',
-    description: 'Complex behavior arising from simple rules. The whole becomes more than the sum of its parts through local interactions.',
-    icon: '◇',
+    id: 'scale-free',
+    title: 'Scale-Free Abstractions',
+    content: `These patterns appear at every scale—the same attractor dynamics govern chemical reactions and climate systems; the same fitness landscape topology shapes protein folding and cultural evolution; the same criticality emerges in sandpiles and neural networks.`,
   },
   {
-    title: 'Phase Transitions',
-    description: 'The boundary between order and chaos where systems exhibit maximum complexity and computational capacity.',
-    icon: '⬡',
+    id: 'information-closure',
+    title: 'Information Closure',
+    content: `A system achieves information closure when its internal model predicts its environment better than raw sensory data could. This is the mathematical signature of agency—and these visualizations show different aspects of how closure emerges and what it enables.`,
   },
   {
-    title: 'Scale-Free Phenomena',
-    description: 'Patterns that look the same at every magnification. Power laws and self-similarity as signatures of critical dynamics.',
-    icon: '∞',
-  },
-  {
+    id: 'computational-irreducibility',
     title: 'Computational Irreducibility',
-    description: 'Systems that are their own fastest simulators. No shortcut to prediction—you must run the computation.',
-    icon: '⧖',
+    content: `Some systems are their own fastest simulators—there's no shortcut to predicting their behavior. This isn't a limitation but a feature: it's what makes genuine novelty possible.`,
+  },
+  {
+    id: 'learning-to-see',
+    title: 'Learning to See',
+    content: `The goal isn't to memorize these specific systems but to develop pattern recognition that transfers. Once you see how ruggedness shapes search in fitness landscapes, you'll recognize the same dynamic in career decisions, scientific discovery, and evolutionary innovation.`,
   },
 ];
 
-export const heroText = {
-  title: 'Scale-Free Abstractions',
-  subtitle: 'Universal patterns in complex systems',
-  intro: `The same mathematical structures appear across wildly different domains: cellular automata and neural networks, sandpiles and stock markets, evolution and optimization. These visualizations explore the deep abstractions that transcend any particular substrate.`,
-};
-
-export const frameworkIntro = `These visualizations share a common thread: they reveal how simple rules generate complex behavior, how systems self-organize to critical states, and why some dynamics are fundamentally unpredictable. Understanding these patterns provides a lens for analyzing any complex adaptive system.`;
+export const theoreticalLayers = [
+  {
+    id: 'boundaries',
+    title: 'Boundaries',
+    subtitle: 'The Genesis of Selfhood',
+    description: 'Everything begins with separation. Markov blankets create perspectives—statistical membranes that render inside and outside conditionally independent, yet connected.',
+  },
+  {
+    id: 'uncertainty',
+    title: 'Uncertainty',
+    subtitle: 'The Currency of Knowledge',
+    description: 'Across boundaries flows information. Entropy quantifies mystery; mutual information captures shared secrets between processes.',
+  },
+  {
+    id: 'closure',
+    title: 'Closure',
+    subtitle: 'The Heartbeat of Existence',
+    description: 'Information closure measures how well internal models predict what flows through the boundary. To persist is to predict.',
+  },
+  {
+    id: 'dynamics',
+    title: 'Dynamics',
+    subtitle: 'The Mechanics of Persistence',
+    description: 'Free energy minimization provides the mechanism. By reducing surprise and aligning beliefs with reality, systems maintain closure.',
+  },
+  {
+    id: 'scale',
+    title: 'Scale',
+    subtitle: 'The Universal Pattern',
+    description: 'The same efficiency ratio appears from particles to galaxies. No scale is privileged; each maintains existence through identical information-theoretic structures.',
+  },
+  {
+    id: 'selection',
+    title: 'Selection',
+    subtitle: 'The Accumulation of History',
+    description: 'Systems don\'t just persist moment-to-moment; they accumulate, complexify, create new possibilities through functional information.',
+  },
+];

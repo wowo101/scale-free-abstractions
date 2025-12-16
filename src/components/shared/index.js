@@ -5,4 +5,3 @@ export { default as Tooltip, PositionedTooltip } from './Tooltip';
 export { default as Button, ButtonGroup } from './Button';
 export { default as MetricBar } from './MetricBar';
 export { default as PlaybackControls } from './PlaybackControls';
-export { default as BackButton } from './BackButton';

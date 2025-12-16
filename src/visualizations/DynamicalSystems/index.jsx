@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { GlassPanel, ParameterSlider, Button, ButtonGroup } from '../../components/shared';
 import { PositionedTooltip } from '../../components/shared/Tooltip';
 import { useDragRotation } from '../../hooks';
@@ -191,6 +192,15 @@ export default function AttractorExplorer() {
         style={{ background: 'rgba(26,26,46,0.95)' }}
       >
         <div className="flex items-center gap-2 mb-3">
+          <Link
+            to="/"
+            className="w-6 h-6 rounded flex items-center justify-center text-slate-400 hover:text-slate-100 hover:bg-white/10 transition-colors"
+            title="Back to Gallery"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+          </Link>
           <div 
             className="w-5 h-5 rounded-full flex items-center justify-center text-[11px]"
             style={{ background: 'linear-gradient(135deg, #50fa7b, #8be9fd)' }}

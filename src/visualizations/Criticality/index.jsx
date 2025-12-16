@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { GlassPanel, ParameterSlider, Button, ButtonGroup } from '../../components/shared';
 import { PositionedTooltip } from '../../components/shared/Tooltip';
 import { useViewportSize } from '../../hooks';
@@ -304,13 +305,24 @@ export default function CriticalitySimulation() {
       >
         {/* Title row with info icon */}
         <div className="flex justify-between items-start mb-3">
-          <div>
-            <h1 className="text-base font-semibold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
-              Sandpile Criticality
-            </h1>
-            <p className="text-[10px] text-slate-500 mt-0.5">
-              Self-organized criticality
-            </p>
+          <div className="flex items-center gap-2">
+            <Link
+              to="/"
+              className="w-6 h-6 rounded flex items-center justify-center text-slate-400 hover:text-slate-100 hover:bg-white/10 transition-colors"
+              title="Back to Gallery"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+              </svg>
+            </Link>
+            <div>
+              <h1 className="text-base font-semibold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                Sandpile Criticality
+              </h1>
+              <p className="text-[10px] text-slate-500 mt-0.5">
+                Self-organized criticality
+              </p>
+            </div>
           </div>
           <button
             onClick={() => setShowGuide(!showGuide)}

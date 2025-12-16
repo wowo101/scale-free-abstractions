@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { getAccent } from '../../styles/theme';
 
 const positionStyles = {
@@ -23,6 +24,7 @@ export default function GlassPanel({
   title = null,
   onToggle = null,
   headerActions = null,
+  backLink = null,
 }) {
   const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
   const accentColors = getAccent(accent);
@@ -64,12 +66,35 @@ export default function GlassPanel({
         className={`flex items-center justify-between ${collapsible ? 'cursor-pointer' : ''} ${isCollapsed ? '' : 'mb-3'}`}
         onClick={collapsible ? handleToggle : undefined}
       >
-        <h2 
-          className="text-sm font-semibold"
-          style={{ color: accentColors.primary }}
-        >
-          {title}
-        </h2>
+        <div className="flex items-center gap-2">
+          {backLink && (
+            <Link
+              to={backLink}
+              className="w-6 h-6 rounded flex items-center justify-center text-slate-400 hover:text-slate-200 hover:bg-white/10 transition-colors"
+              title="Back to Gallery"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <svg 
+                width="14" 
+                height="14" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth="2"
+                strokeLinecap="round" 
+                strokeLinejoin="round"
+              >
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+              </svg>
+            </Link>
+          )}
+          <h2 
+            className="text-sm font-semibold"
+            style={{ color: accentColors.primary }}
+          >
+            {title}
+          </h2>
+        </div>
         <div className="flex items-center gap-2">
           {headerActions}
           {collapsible && (

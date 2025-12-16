@@ -10,13 +10,63 @@ export default function GalleryCard({
   accent,
   route,
   gradient,
+  compact = false,
 }) {
   const accentColors = getAccent(accent);
   
+  if (compact) {
+    return (
+      <Link 
+        to={route}
+        className="group block glass-panel p-3 transition-all duration-200 hover:scale-[1.02]"
+        style={{ borderColor: 'rgba(255,255,255,0.06)' }}
+      >
+        <div className="flex items-start gap-3">
+          {/* Small gradient preview */}
+          <div 
+            className={`w-10 h-10 rounded-md bg-gradient-to-br ${gradient} opacity-70 group-hover:opacity-100 transition-opacity flex-shrink-0 flex items-center justify-center`}
+          >
+            <span className="text-white/70 text-sm">
+              {accent === 'zinc' && '▦'}
+              {accent === 'green' && '∿'}
+              {accent === 'cyan' && '◈'}
+              {accent === 'indigo' && '⛰'}
+            </span>
+          </div>
+          
+          {/* Content */}
+          <div className="flex-1 min-w-0">
+            <h3 
+              className="text-sm font-medium mb-0.5 group-hover:text-white transition-colors truncate"
+              style={{ color: accentColors.primary }}
+            >
+              {title}
+            </h3>
+            <p className="text-[10px] text-slate-500 leading-snug line-clamp-2">
+              {description}
+            </p>
+          </div>
+          
+          {/* Arrow */}
+          <svg 
+            className="w-4 h-4 text-slate-600 group-hover:text-slate-400 transition-colors flex-shrink-0 mt-0.5"
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <path d="M9 18l6-6-6-6" />
+          </svg>
+        </div>
+      </Link>
+    );
+  }
+  
+  // Full card (kept for potential future use)
   return (
     <Link 
       to={route}
-      className="group block glass-panel p-5 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg"
+      className="group block glass-panel p-5 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg relative"
       style={{ 
         '--card-accent': accentColors.primary,
         borderColor: 'rgba(255,255,255,0.08)',

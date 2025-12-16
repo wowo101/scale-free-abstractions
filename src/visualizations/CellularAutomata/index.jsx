@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import { GlassPanel, MetricBar, PlaybackControls, Button } from '../../components/shared';
 import { useViewportSize } from '../../hooks';
 import { COMPLEXITY_CLASSES, RULE_INFO, getClassForRule, getRandomRuleFromClass } from './data';
@@ -153,9 +154,20 @@ export default function CellularAutomataExplorer() {
         }}
       >
         {/* Header */}
-        <h1 className="text-sm font-medium text-zinc-100 mb-3 flex-shrink-0">
-          Elementary Cellular Automata
-        </h1>
+        <div className="flex items-center gap-2 mb-3 flex-shrink-0">
+          <Link
+            to="/"
+            className="w-6 h-6 rounded flex items-center justify-center text-zinc-400 hover:text-zinc-100 hover:bg-white/10 transition-colors"
+            title="Back to Gallery"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+          </Link>
+          <h1 className="text-sm font-medium text-zinc-100">
+            Elementary Cellular Automata
+          </h1>
+        </div>
         
         {/* Rule Navigation */}
         <div className="flex items-center gap-2 flex-shrink-0" style={{ height: '28px' }}>
