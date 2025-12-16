@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { visualizations, heroText, coreInsight, framingContent, theoreticalLayers } from '../data/concepts';
+import { visualizations, heroText, framingContent, theoreticalLayers } from '../data/concepts';
 import { getAccent } from '../styles/theme';
 
 // Hook for scroll-based reveal animations
@@ -29,12 +29,16 @@ function useScrollReveal(threshold = 0.15) {
 }
 
 // Scroll reveal wrapper component
-function RevealSection({ children, className = '', delay = 0 }) {
+function RevealSection({ children, className = '', delay = 0, id = null, innerRef = null }) {
   const [ref, isVisible] = useScrollReveal();
   
   return (
     <div
-      ref={ref}
+      ref={(node) => {
+        ref.current = node;
+        if (innerRef) innerRef.current = node;
+      }}
+      id={id}
       className={`transition-all duration-700 ease-out ${className}`}
       style={{
         opacity: isVisible ? 1 : 0,
@@ -47,70 +51,83 @@ function RevealSection({ children, className = '', delay = 0 }) {
   );
 }
 
-// Medium-sized card for the sticky row
-function VisualizationCard({ title, subtitle, description, accent, route, gradient }) {
+// Card for the visualization row - no icons, just gradient preview
+function VisualizationCard({ title, subtitle, accent, route, gradient }) {
   const accentColors = getAccent(accent);
   
   return (
     <Link 
       to={route}
-      className="group block glass-panel p-4 transition-all duration-300 hover:scale-[1.03] hover:shadow-xl hover:shadow-black/20"
-      style={{ borderColor: 'rgba(255,255,255,0.06)' }}
+      className="group block glass-panel p-3 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:shadow-black/20"
+      style={{ borderColor: 'rgba(255,255,255,0.08)' }}
     >
-      {/* Gradient preview */}
+      {/* Gradient preview - no icon */}
       <div 
-        className={`h-20 rounded-lg mb-3 bg-gradient-to-br ${gradient} opacity-75 group-hover:opacity-100 transition-opacity flex items-center justify-center relative overflow-hidden`}
+        className={`h-16 rounded-md mb-2.5 bg-gradient-to-br ${gradient} opacity-70 group-hover:opacity-100 transition-opacity relative overflow-hidden`}
       >
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[length:16px_16px]" />
+        <div className="absolute inset-0 opacity-15">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.15)_1px,transparent_1px)] bg-[length:12px_12px]" />
         </div>
-        <span className="text-2xl text-white/80 group-hover:scale-110 transition-transform">
-          {accent === 'zinc' && '▦'}
-          {accent === 'green' && '∿'}
-          {accent === 'cyan' && '◈'}
-          {accent === 'indigo' && '⛰'}
-        </span>
       </div>
       
       {/* Content */}
       <h3 
-        className="text-sm font-semibold mb-1 group-hover:text-white transition-colors"
+        className="text-xs font-semibold mb-0.5 group-hover:text-white transition-colors"
         style={{ color: accentColors.primary }}
       >
         {title}
       </h3>
-      <p className="text-[10px] text-slate-500 mb-1.5">{subtitle}</p>
-      <p className="text-xs text-slate-400 leading-relaxed line-clamp-2">
-        {description}
-      </p>
+      <p className="text-[10px] text-slate-500 leading-snug">{subtitle}</p>
     </Link>
   );
 }
 
 export default function Gallery() {
   const [isSticky, setIsSticky] = useState(false);
+  const [isPastAnchor, setIsPastAnchor] = useState(false);
+  const topSentinelRef = useRef(null);
+  const anchorSentinelRef = useRef(null);
   const cardRowRef = useRef(null);
-  const sentinelRef = useRef(null);
   
   useEffect(() => {
-    const observer = new IntersectionObserver(
+    const topObserver = new IntersectionObserver(
       ([entry]) => {
+        // When top sentinel is visible, cards are in normal flow
         setIsSticky(!entry.isIntersecting);
       },
-      { threshold: 0, rootMargin: '0px 0px 0px 0px' }
+      { threshold: 0 }
     );
     
-    if (sentinelRef.current) {
-      observer.observe(sentinelRef.current);
-    }
+    const anchorObserver = new IntersectionObserver(
+      ([entry]) => {
+        // When anchor sentinel leaves top of viewport, cards should unstick
+        if (!entry.isIntersecting && entry.boundingClientRect.top < 200) {
+          setIsPastAnchor(true);
+        } else {
+          setIsPastAnchor(false);
+        }
+      },
+      { threshold: 0, rootMargin: '-200px 0px 0px 0px' }
+    );
     
-    return () => observer.disconnect();
+    if (topSentinelRef.current) topObserver.observe(topSentinelRef.current);
+    if (anchorSentinelRef.current) anchorObserver.observe(anchorSentinelRef.current);
+    
+    return () => {
+      topObserver.disconnect();
+      anchorObserver.disconnect();
+    };
   }, []);
+
+  const introText = `The same mathematical structures appear across wildly different domains—from chemical reactions to climate systems, from protein folding to cultural evolution, from sandpiles to neural networks. These scale-free abstractions provide a powerful lens for understanding complex systems, organized around a central insight: existence is the active maintenance of information closure, and this maintenance has characteristic structure at every scale.`;
+  
+  // Determine sticky state: sticky only when past top sentinel AND before anchor
+  const shouldBeSticky = isSticky && !isPastAnchor;
   
   return (
     <div className="min-h-screen bg-canvas text-slate-200">
       {/* Hero Section */}
-      <header className="relative min-h-[70vh] flex items-center justify-center px-8 pt-16 pb-8">
+      <header className="relative min-h-[60vh] flex items-center justify-center px-8 pt-16 pb-8">
         {/* Background gradient */}
         <div className="absolute inset-0 bg-gradient-to-b from-slate-900/30 via-transparent to-transparent pointer-events-none" />
         
@@ -122,38 +139,30 @@ export default function Gallery() {
           }}
         />
         
-        <div className="relative max-w-2xl text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-cyan-400 via-indigo-400 to-purple-400 text-transparent bg-clip-text leading-tight">
+        <div className="relative max-w-3xl text-center">
+          <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-cyan-400 via-indigo-400 to-purple-400 text-transparent bg-clip-text leading-tight">
             {heroText.title}
           </h1>
-          <p className="text-xl text-slate-400 mb-10">{heroText.subtitle}</p>
           
-          {/* Core insight */}
-          <div className="glass-panel p-6 text-left max-w-lg mx-auto">
-            <p className="text-lg text-slate-200 font-medium leading-relaxed">
-              {coreInsight.statement}
-            </p>
-            <p className="text-sm text-slate-400 mt-2">
-              {coreInsight.elaboration}
-            </p>
-          </div>
+          {/* Intro paragraph - same size as title area, lighter weight */}
+          <p className="text-xl md:text-2xl font-light text-slate-400 leading-relaxed">
+            {introText}
+          </p>
         </div>
       </header>
       
-      {/* Sentinel for detecting when cards should stick */}
-      <div ref={sentinelRef} className="h-0" />
+      {/* Top sentinel - when this leaves viewport, cards become sticky */}
+      <div ref={topSentinelRef} className="h-0" />
       
-      {/* Sticky Card Row */}
+      {/* Card Row - sticky between sentinels, transparent background */}
       <div 
         ref={cardRowRef}
-        className={`sticky top-0 z-50 transition-all duration-500 ease-out ${
-          isSticky 
-            ? 'bg-canvas/95 backdrop-blur-md shadow-2xl shadow-black/30 border-b border-white/5' 
-            : 'bg-transparent'
+        className={`z-50 transition-all duration-500 ease-out ${
+          shouldBeSticky ? 'sticky top-0' : 'relative'
         }`}
       >
-        <div className="max-w-5xl mx-auto px-6 py-4">
-          <div className="grid grid-cols-4 gap-4">
+        <div className="max-w-4xl mx-auto px-6 py-4">
+          <div className="grid grid-cols-4 gap-3">
             {visualizations.map((viz, index) => (
               <div
                 key={viz.id}
@@ -169,36 +178,38 @@ export default function Gallery() {
         </div>
       </div>
       
-      {/* Scroll content that goes behind cards */}
+      {/* Scroll content */}
       <main className="relative">
-        {/* Gradient overlay at top to create smooth transition */}
-        <div 
-          className="absolute top-0 left-0 right-0 h-32 pointer-events-none z-10"
-          style={{
-            background: 'linear-gradient(to bottom, rgba(10,10,15,0.95) 0%, transparent 100%)',
-          }}
-        />
-        
         {/* Framing Content Sections */}
-        <div className="max-w-2xl mx-auto px-8 pt-24 pb-24">
-          {framingContent.map((section, index) => (
-            <RevealSection key={section.id} delay={index * 100} className="mb-24">
-              <h2 className="text-2xl font-semibold mb-4 text-slate-200">
-                {section.title}
-              </h2>
-              <p className="text-lg text-slate-400 leading-relaxed">
-                {section.content}
-              </p>
-              
-              {/* Gradient line */}
-              <div 
-                className="mt-8 h-px w-24"
-                style={{
-                  background: 'linear-gradient(90deg, rgba(99,102,241,0.5) 0%, transparent 100%)',
-                }}
-              />
-            </RevealSection>
-          ))}
+        <div className="max-w-2xl mx-auto px-8 pt-16 pb-8">
+          {framingContent.map((section, index) => {
+            const isLastSection = section.id === 'learning-to-see';
+            return (
+              <RevealSection 
+                key={section.id} 
+                delay={index * 100} 
+                className="mb-24"
+              >
+                <h2 className="text-2xl font-semibold mb-4 text-slate-200">
+                  {section.title}
+                </h2>
+                <p className="text-lg text-slate-400 leading-relaxed">
+                  {section.content}
+                </p>
+                
+                {/* Gradient line */}
+                <div 
+                  className="mt-8 h-px w-24"
+                  style={{
+                    background: 'linear-gradient(90deg, rgba(99,102,241,0.5) 0%, transparent 100%)',
+                  }}
+                />
+                
+                {/* Anchor sentinel after Learning to See */}
+                {isLastSection && <div ref={anchorSentinelRef} className="h-0 mt-8" />}
+              </RevealSection>
+            );
+          })}
         </div>
         
         {/* Theoretical Framework Section */}
