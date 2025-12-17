@@ -21,21 +21,21 @@ export default function PhaseGuide({ onClose }) {
         <div>
           <h3 className="text-cyan-400 font-semibold mb-1">Subcritical</h3>
           <p className="text-slate-400">
-            System building up. Mostly dark cells with scattered bright spots. Small, localized avalanches.
+            System building up. Mostly dark cells with scattered bright spots. Small, localised avalanches.
           </p>
         </div>
         
         <div>
           <h3 className="text-amber-400 font-semibold mb-1">Critical</h3>
           <p className="text-slate-400">
-            Edge of chaos. Uniform texture—most cells near threshold. Scale-free behavior: avalanches of all sizes, power-law distributed.
+            Edge of chaos. Uniform texture – most cells near threshold. Scale-free behaviour: avalanches of all sizes, power-law distributed.
           </p>
         </div>
         
         <div>
           <h3 className="text-rose-400 font-semibold mb-1">Supercritical</h3>
           <p className="text-slate-400">
-            Constant collapse. Red flashing as cells continuously topple. Transient—settles to critical state.
+            Constant collapse. Red flashing as cells continuously topple. Transient – settles to critical state.
           </p>
         </div>
       </div>

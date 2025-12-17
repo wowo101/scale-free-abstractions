@@ -60,13 +60,13 @@ export const stateColors = {
 
 // Tooltip definitions
 export const tooltips = {
-  threshold: "Number of grains that triggers a cell to collapse and distribute to neighbors. Higher values store more energy before release.",
-  dropRate: "Grains randomly added per simulation step—the driving force pushing the system toward criticality.",
+  threshold: "Number of grains that triggers a cell to collapse and distribute to neighbours. Higher values store more energy before release.",
+  dropRate: "Grains randomly added per simulation step – the driving force pushing the system toward criticality.",
   dissipation: "Fraction of energy lost during each topple. High values drain energy and prevent the system from reaching criticality."
 };
 
 export const chartTooltipText = `This log-log chart shows avalanche size distribution as DENSITY (count ÷ bin width). The yellow line is the theoretical power law P(s) ∝ s^(−${TAU}).
 
-At criticality, observed bars should align with this diagonal line. This indicates scale-free behavior: no characteristic size dominates.
+At criticality, observed bars should align with this diagonal line. This indicates scale-free behaviour: no characteristic size dominates.
 
 Small avalanches are common, large ones rare, but they follow a predictable ratio. This "scale invariance" is why critical systems produce both tiny fluctuations and rare catastrophic cascades from identical dynamics.`;

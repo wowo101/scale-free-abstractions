@@ -418,7 +418,7 @@ export default function AdaptiveCycleExplorer() {
         </div>
         
         <div className="text-[11px] text-slate-400 leading-relaxed">
-          Holling's adaptive cycle describes how complex systems—ecosystems, economies, societies—cycle 
+          Holling's adaptive cycle describes how complex systems – ecosystems, economies, societies – cycle 
           through phases of growth, rigidity, collapse, and renewal. The cycle you see isn't a 
           predetermined path but an <em className="text-teal-400/80">attractor pattern</em> that emerges 
           as the system moves through its state space.

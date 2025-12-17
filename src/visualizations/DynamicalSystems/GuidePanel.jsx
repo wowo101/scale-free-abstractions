@@ -41,7 +41,7 @@ export default function GuidePanel({ attractorType, onClose }) {
       <div className="h-px bg-white/10 my-3.5" />
       
       <div className="text-[11px] text-slate-500 italic leading-relaxed mb-3.5">
-        The topology of state space fundamentally determines which long-term behaviors are possible—there is no universal path to stability.
+        The topology of state space fundamentally determines which long-term behaviours are possible – there is no universal path to stability.
       </div>
       
       <div className="text-[10px] text-slate-600">

@@ -252,12 +252,12 @@ export default function CellularAutomataExplorer() {
       >
         <p className="text-[11px] text-zinc-500 leading-relaxed mb-3">
           A one-dimensional binary array evolves in discrete steps. Each cell's next state 
-          depends on itself and two neighbors—8 configurations, each mapped to 0 or 1, yielding 
+          depends on itself and two neighbours – 8 configurations, each mapped to 0 or 1, yielding 
           2⁸ = 256 possible rules.
         </p>
         
         <p className="text-[11px] text-zinc-500 leading-relaxed mb-3">
-          Wolfram classified these rules into four classes based on their long-term behavior 
+          Wolfram classified these rules into four classes based on their long-term behaviour 
           and computational properties:
         </p>
         
@@ -300,7 +300,7 @@ export default function CellularAutomataExplorer() {
         </div>
         
         <p className="text-[9px] text-zinc-600 mt-3 pt-2 border-t border-zinc-800 leading-relaxed">
-          Note: Classification is qualitative. Some rules exhibit boundary behavior, and 
+          Note: Classification is qualitative. Some rules exhibit boundary behaviour, and 
           it is formally undecidable which class an arbitrary rule belongs to.
         </p>
       </GlassPanel>

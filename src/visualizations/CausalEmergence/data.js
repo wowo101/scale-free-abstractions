@@ -2,7 +2,7 @@
 export const PRESETS = {
   noisyCopy: {
     name: 'Noisy Copy',
-    description: 'Two bits that tend to stay the same (00 or 11) or different (01 or 10). Like a noisy communication channel—each bit occasionally flips. Grouping into "same" vs "different" reduces noise and increases predictability.',
+    description: 'Two bits that tend to stay the same (00 or 11) or different (01 or 10). Like a noisy communication channel – each bit occasionally flips. Grouping into "same" vs "different" reduces noise and increases predictability.',
     elements: 4,
     states: ['00', '01', '10', '11'],
     // TPM: rows = current state, cols = next state
@@ -33,7 +33,7 @@ export const PRESETS = {
   },
   majority: {
     name: 'Majority Rule',
-    description: 'Three voters where majority wins. Individual votes are noisy, but the group tends toward consensus. Grouping by "number of 1s" (0, 1, 2, or 3) captures the collective behavior better than tracking each voter.',
+    description: 'Three voters where majority wins. Individual votes are noisy, but the group tends toward consensus. Grouping by "number of 1s" (0, 1, 2, or 3) captures the collective behaviour better than tracking each voter.',
     elements: 8,
     states: ['000', '001', '010', '011', '100', '101', '110', '111'],
     tpm: [
@@ -51,7 +51,7 @@ export const PRESETS = {
   },
   deterministic: {
     name: 'Deterministic',
-    description: 'A perfectly predictable system: each state always leads to exactly one next state. Since there\'s no noise to reduce, coarse-graining can only lose information—no emergence here.',
+    description: 'A perfectly predictable system: each state always leads to exactly one next state. Since there\'s no noise to reduce, coarse-graining can only lose information – no emergence here.',
     elements: 4,
     states: ['00', '01', '10', '11'],
     tpm: [
@@ -103,7 +103,7 @@ export const PRESETS = {
     description: 'Two birds where each moves somewhat randomly, but the flock has a predictable direction. Pure left (LL) stays left-ish, pure right (RR) stays right-ish, mixed states are unstable. The "flock direction" macro variable is more predictive than individual positions.',
     elements: 4,
     states: ['LL', 'LR', 'RL', 'RR'],
-    // Two birds: each bit = direction. Individually noisy, but group behavior is deterministic
+    // Two birds: each bit = direction. Individually noisy, but group behaviour is deterministic
     // If majority left (LL, LR, RL with 2+ L): flock goes left
     // Key insight: make transitions that are noisy at micro but average to deterministic at macro
     tpm: [
@@ -147,13 +147,13 @@ export const EXPLANATIONS = {
 Coarse-graining can:
 - Reduce noise (noisy micro → stable macro)
 - Eliminate degeneracy (many-to-one → one-to-one)
-- Increase determinism (averaging makes behavior predictable)
+- Increase determinism (averaging makes behaviour predictable)
 
-When CE > 0, the macro level isn't just convenient—it's *more causally accurate* than the micro level.`,
+When CE > 0, the macro level isn't just convenient – it's *more causally accurate* than the micro level.`,
   },
   ei: {
     title: 'Effective Information',
-    content: `Effective Information (EI) measures causal power—how much the current state determines the next.
+    content: `Effective Information (EI) measures causal power – how much the current state determines the next.
 
 **Formula:** EI = H(output) - H(output|input)
 

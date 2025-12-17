@@ -22,11 +22,11 @@ export const PARAM_INFO = {
   },
   nonlinearity: { 
     name: 'Nonlinearity', 
-    desc: 'Strength of multiplicative terms (x·y, x·z). Essential for limit cycles and strange attractors—without it, only point attractors exist.' 
+    desc: 'Strength of multiplicative terms (x·y, x·z). Essential for limit cycles and strange attractors – without it, only point attractors exist.' 
   },
   feedback: { 
     name: 'Self-Feedback', 
-    desc: 'How much each variable dampens itself. Creates self-limiting behavior that can stabilize or destabilize depending on other parameters.' 
+    desc: 'How much each variable dampens itself. Creates self-limiting behaviour that can stabilise or destabilise depending on other parameters.' 
   }
 };
 
@@ -44,7 +44,7 @@ export const EXPLANATIONS = {
   },
   'strange': { 
     title: 'Strange Attractor', 
-    desc: 'Chaos! Bounded but never repeating. Strong coupling creates stretching and folding—nearby points diverge exponentially.', 
+    desc: 'Chaos! Bounded but never repeating. Strong coupling creates stretching and folding – nearby points diverge exponentially.', 
     mech: 'High coupling + nonlinearity' 
   },
   'unbounded': { 
@@ -54,7 +54,7 @@ export const EXPLANATIONS = {
   },
   'transient': { 
     title: 'Transient', 
-    desc: 'Still settling toward long-term behavior.', 
+    desc: 'Still settling toward long-term behaviour.', 
     mech: 'Awaiting convergence...' 
   },
   'analyzing': { 

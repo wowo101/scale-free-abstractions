@@ -16,12 +16,12 @@ const CE_EXPLANATION = `Causal Emergence (CE) measures whether a macro-level des
 **Formula:** CE = EI(macro) - EI(micro)
 
 **Interpretation:**
-• CE > 0: The macro level captures MORE causal structure—emergence!
+• CE > 0: The macro level captures MORE causal structure – emergence!
 • CE = 0: Micro and macro have equal causal power
 • CE < 0: Information is lost in coarse-graining
 
 **Why this matters:**
-When CE > 0, the higher-level description isn't just convenient—it's more causally accurate. The macro level reveals real patterns that are obscured by micro-level noise.`;
+When CE > 0, the higher-level description isn't just convenient – it's more causally accurate. The macro level reveals real patterns that are obscured by micro-level noise.`;
 
 export default function CausalEmergenceCalculator() {
   const canvasRef = useRef(null);

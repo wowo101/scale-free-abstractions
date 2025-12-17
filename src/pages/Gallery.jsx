@@ -251,7 +251,7 @@ export default function Gallery() {
                 The Mathematical Architecture
               </h2>
               <p className="text-center text-slate-500 mb-16 max-w-xl mx-auto">
-                Six interconnected layers describe what it means to exist—not as static substance but as ongoing process. The six tools above illuminate different aspects of this architecture.
+                Six interconnected layers describe what it means to exist – not as static substance but as ongoing process. The six tools above illuminate different aspects of this architecture.
               </p>
             </RevealSection>
 
@@ -279,7 +279,7 @@ export default function Gallery() {
         <section className="py-24 text-center px-8">
           <RevealSection>
             <p className="text-lg text-slate-500 max-w-xl mx-auto leading-relaxed">
-              The universe doesn't follow laws—it expresses patterns through the collective agency of systems maintaining their existence.
+              The universe doesn't follow laws – it expresses patterns through the collective agency of systems maintaining their existence.
             </p>
             <p className="text-sm text-slate-600 mt-8">
               To exist is to predict. To predict is to persist.
