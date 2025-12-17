@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 
 export default defineConfig({
+  base: '/scale-free-abstractions/',
   plugins: [react()],
   resolve: {
     alias: {

@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useEffect } from 'react';
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import Gallery from './pages/Gallery';
 import CellularAutomataExplorer from './visualizations/CellularAutomata';
 import DynamicalSystemsExplorer from './visualizations/DynamicalSystems';
@@ -10,9 +11,25 @@ import SystemAsAttractorExplorer from './visualizations/SystemAsAttractor';
 import AssemblySpaceExplorer from './visualizations/AssemblySpace';
 import AgentEmergenceExplorer from './visualizations/AgentEmergence';
 
+// Handle GitHub Pages SPA redirect
+function RedirectHandler() {
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    const redirect = sessionStorage.getItem('redirect');
+    if (redirect) {
+      sessionStorage.removeItem('redirect');
+      navigate(redirect, { replace: true });
+    }
+  }, [navigate]);
+  
+  return null;
+}
+
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/scale-free-abstractions">
+      <RedirectHandler />
       <Routes>
         <Route path="/" element={<Gallery />} />
         <Route path="/cellular-automata" element={<CellularAutomataExplorer />} />

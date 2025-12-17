@@ -265,6 +265,9 @@ export default function Gallery() {
                     </div>
                     <p className="text-xs text-indigo-400/80 mb-2">{layer.subtitle}</p>
                     <p className="text-sm text-slate-500 leading-relaxed">{layer.description}</p>
+                    {layer.equation && (
+                      <p className="mt-3 font-mono text-xs text-cyan-400/70">{layer.equation}</p>
+                    )}
                   </div>
                 </RevealSection>
               ))}
