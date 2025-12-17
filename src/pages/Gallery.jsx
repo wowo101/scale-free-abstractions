@@ -78,12 +78,12 @@ function VisualizationCard({ title, subtitle, accent, route, gradient }) {
   );
 }
 
-// Card row component to avoid duplication
+// Card row component to avoid duplication - 3x3 grid
 function CardRow({ className = '' }) {
   return (
     <div className={`max-w-4xl mx-auto px-6 py-4 ${className}`}>
-      <div className="grid grid-cols-4 gap-3">
-        {visualizations.map((viz, index) => (
+      <div className="grid grid-cols-3 gap-3">
+        {visualizations.slice(0, 9).map((viz, index) => (
           <div
             key={viz.id}
             className="transition-all duration-500 ease-out"

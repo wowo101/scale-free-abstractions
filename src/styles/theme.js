@@ -54,6 +54,24 @@ export const colors = {
       glow: 'rgba(161, 161, 170, 0.3)',
       border: 'rgba(161, 161, 170, 0.25)',
     },
+    teal: {
+      primary: '#14b8a6',
+      secondary: '#2dd4bf',
+      glow: 'rgba(20, 184, 166, 0.3)',
+      border: 'rgba(20, 184, 166, 0.25)',
+    },
+    violet: {
+      primary: '#8b5cf6',
+      secondary: '#a78bfa',
+      glow: 'rgba(139, 92, 246, 0.3)',
+      border: 'rgba(139, 92, 246, 0.25)',
+    },
+    orange: {
+      primary: '#f97316',
+      secondary: '#fb923c',
+      glow: 'rgba(249, 115, 22, 0.3)',
+      border: 'rgba(249, 115, 22, 0.25)',
+    },
   },
   
   // Semantic colors

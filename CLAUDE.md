@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Scale-Free Abstractions Explorer - A unified React application showcasing interactive visualizations of complex systems theory, dynamical systems, and self-organized criticality. The application features a gallery landing page with educational framing and four distinct visualization modules.
+Scale-Free Abstractions Explorer - A React application showcasing interactive visualizations of complex systems theory, dynamical systems, and self-organized criticality. The application features a gallery landing page with educational framing and multiple visualization modules.
 
 ## Tech Stack
 
@@ -39,6 +39,7 @@ src/
 ├── utils/
 │   └── colors.js         # Shared color utilities (viridis, getColor)
 ├── visualizations/       # Visualization modules
+│   ├── AdaptiveCycle/
 │   ├── CellularAutomata/
 │   ├── DynamicalSystems/
 │   ├── Criticality/
@@ -49,7 +50,7 @@ src/
 ├── styles/
 │   ├── theme.js          # Design tokens
 │   └── globals.css       # Tailwind + custom styles
-├── App.jsx               # Router setup (direct visualization imports)
+├── App.jsx               # Router setup
 └── main.jsx              # Entry point
 ```
 
@@ -62,17 +63,22 @@ npm run build      # Production build to dist/
 npm run preview    # Preview production build
 ```
 
+## Git Workflow
+
+**Important**: Always run `git add .` before committing to ensure all changes (including new files) are staged. Use `git status` to verify what will be committed.
+
 ## Visualizations
 
-1. **Cellular Automata** (`/cellular-automata`) - Wolfram's 256 elementary rules with complexity classification (I-IV), entropy metrics, rule transition tables
-2. **Types of Attractors** (`/attractors`) - 3D attractor visualization showing fixed points, limit cycles, strange attractors with real-time classification
+1. **Cellular Automata** (`/cellular-automata`) - Wolfram's 256 elementary rules with complexity classification (I-IV), entropy metrics
+2. **Types of Attractors** (`/attractors`) - 3D attractor visualization showing fixed points, limit cycles, strange attractors
 3. **Self-Organized Criticality** (`/criticality`) - BTW sandpile model with power-law avalanche distributions
 4. **Fitness Landscapes** (`/fitness-landscape`) - Configurable 3D/2D landscapes for exploring optimization topology
+5. **Adaptive Cycle** (`/adaptive-cycle`) - Holling's adaptive cycle (r→K→Ω→α) with bundled attractor trajectories
 
 ## Design System
 
 - **Glassmorphism UI**: Semi-transparent panels with backdrop blur
-- **Accent colors**: Each visualization has a unique accent (zinc, green, cyan, indigo)
+- **Accent colors**: Each visualization has a unique accent color
 - **Design tokens**: Centralized in `src/styles/theme.js`
 - **Utility-first CSS**: Tailwind with custom `.glass-panel` component class
 
@@ -81,7 +87,7 @@ npm run preview    # Preview production build
 - Shared components via barrel export (`components/shared/index.js`)
 - Custom hooks for animation loops (`useAnimationFrame`), viewport tracking, drag rotation
 - Shared color utilities in `src/utils/colors.js` (viridis, getColor, COLOR_SCHEMES)
-- Each visualization folder contains: `index.jsx`, `utils.js`, `data.js`, and sub-components
+- Each visualization folder contains: `index.jsx`, `utils.js`, `data.js`
 - App.jsx imports visualizations directly (no page wrapper layer)
 - BackButton component provides consistent navigation back to gallery
 
@@ -93,3 +99,8 @@ The visualizations demonstrate:
 - **Scale-free behavior** and power laws
 - **Attractor dynamics** in nonlinear systems
 - **Fitness landscape topology** and search strategies
+- **Adaptive cycles** and resilience in complex systems
+
+## Planning
+
+See plan file at `~/.claude/plans/virtual-wiggling-sun.md` for detailed specs on upcoming visualizations.

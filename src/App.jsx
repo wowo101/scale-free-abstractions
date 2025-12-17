@@ -4,6 +4,11 @@ import CellularAutomataExplorer from './visualizations/CellularAutomata';
 import DynamicalSystemsExplorer from './visualizations/DynamicalSystems';
 import CriticalitySimulation from './visualizations/Criticality';
 import FitnessLandscapeExplorer from './visualizations/FitnessLandscape';
+import AdaptiveCycleExplorer from './visualizations/AdaptiveCycle';
+import CausalEmergenceCalculator from './visualizations/CausalEmergence';
+import SystemAsAttractorExplorer from './visualizations/SystemAsAttractor';
+import AssemblySpaceExplorer from './visualizations/AssemblySpace';
+import AgentEmergenceExplorer from './visualizations/AgentEmergence';
 
 export default function App() {
   return (
@@ -14,6 +19,11 @@ export default function App() {
         <Route path="/attractors" element={<DynamicalSystemsExplorer />} />
         <Route path="/criticality" element={<CriticalitySimulation />} />
         <Route path="/fitness-landscape" element={<FitnessLandscapeExplorer />} />
+        <Route path="/adaptive-cycle" element={<AdaptiveCycleExplorer />} />
+        <Route path="/causal-emergence" element={<CausalEmergenceCalculator />} />
+        <Route path="/identity" element={<SystemAsAttractorExplorer />} />
+        <Route path="/assembly" element={<AssemblySpaceExplorer />} />
+        <Route path="/agent-emergence" element={<AgentEmergenceExplorer />} />
       </Routes>
     </BrowserRouter>
   );
