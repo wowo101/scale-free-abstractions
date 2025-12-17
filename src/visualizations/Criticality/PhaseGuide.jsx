@@ -1,21 +1,13 @@
 import React from 'react';
 import { GlassPanel } from '../../components/shared';
 
-export default function PhaseGuide({ onClose }) {
+export default function PhaseGuide() {
   return (
     <GlassPanel
       position="top-right"
       width={280}
       accent="cyan"
       title="Phase Guide"
-      headerActions={
-        <button
-          onClick={onClose}
-          className="text-slate-500 hover:text-slate-300 text-base leading-none"
-        >
-          ×
-        </button>
-      }
     >
       <div className="flex flex-col gap-4 text-xs leading-relaxed mt-3">
         <div>

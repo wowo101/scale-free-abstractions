@@ -30,7 +30,6 @@ export default function CausalEmergenceCalculator() {
   const [activePreset, setActivePreset] = useState('noisyCopy');
   const [preset, setPreset] = useState(PRESETS.noisyCopy);
   const [grouping, setGrouping] = useState(PRESETS.noisyCopy.suggestedGrouping);
-  const [showGuide, setShowGuide] = useState(true);
   const [hoveredState, setHoveredState] = useState(null);
   const [animationPhase, setAnimationPhase] = useState(0);
   const [showCEInfo, setShowCEInfo] = useState(false);
@@ -645,19 +644,7 @@ export default function CausalEmergenceCalculator() {
       </div>
 
       {/* Guide panel */}
-      {showGuide && (
-        <GuidePanel onClose={() => setShowGuide(false)} />
-      )}
-
-      {/* Show guide button */}
-      {!showGuide && (
-        <button
-          onClick={() => setShowGuide(true)}
-          className="absolute right-5 bottom-14 px-3 py-1.5 glass-panel text-[11px] text-slate-400 hover:text-slate-200 transition"
-        >
-          Show Guide
-        </button>
-      )}
+      <GuidePanel />
     </div>
   );
 }

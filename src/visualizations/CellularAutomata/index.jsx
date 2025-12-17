@@ -9,12 +9,14 @@ import RuleTable from './RuleTable';
 export default function CellularAutomataExplorer() {
   const [rule, setRule] = useState(110);
   const [grid, setGrid] = useState([]);
+  const [generation, setGeneration] = useState(1);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showRuleGrid, setShowRuleGrid] = useState(false);
   const [speed] = useState(25);
   
   const canvasRef = useRef(null);
   const gridRef = useRef([]);
+  const generationRef = useRef(0);
   const { width, height } = useViewportSize();
   
   const cellSize = 3;
@@ -39,15 +41,15 @@ export default function CellularAutomataExplorer() {
     const firstRow = new Array(w).fill(0);
     firstRow[Math.floor(w / 2)] = 1;
     gridRef.current = [firstRow];
+    generationRef.current = 1;
+    setGeneration(1);
     setGrid([firstRow]);
   }, [width]);
 
   const computeNextGeneration = useCallback(() => {
     const w = Math.floor(width / cellSize);
-    const maxGen = Math.floor(height / cellSize);
+    const maxVisible = Math.floor(height / cellSize);
     const currentGrid = gridRef.current;
-    
-    if (currentGrid.length >= maxGen) return false;
     
     const lastRow = currentGrid[currentGrid.length - 1];
     const newRow = new Array(w);
@@ -57,31 +59,20 @@ export default function CellularAutomataExplorer() {
       const right = lastRow[(i + 1) % w];
       newRow[i] = getNextState(left, center, right, ruleBinary);
     }
-    gridRef.current = [...currentGrid, newRow];
+    
+    // Add new row and scroll if needed (keep only visible rows plus a small buffer)
+    let newGrid = [...currentGrid, newRow];
+    if (newGrid.length > maxVisible) {
+      newGrid = newGrid.slice(newGrid.length - maxVisible);
+    }
+    
+    gridRef.current = newGrid;
+    generationRef.current += 1;
+    setGeneration(generationRef.current);
     setGrid(gridRef.current);
     return true;
   }, [ruleBinary, width, height]);
 
-  const runAll = useCallback(() => {
-    const w = Math.floor(width / cellSize);
-    const maxGen = Math.floor(height / cellSize);
-    let currentGrid = gridRef.current;
-    
-    while (currentGrid.length < maxGen) {
-      const lastRow = currentGrid[currentGrid.length - 1];
-      const newRow = new Array(w);
-      for (let i = 0; i < w; i++) {
-        const left = lastRow[(i - 1 + w) % w];
-        const center = lastRow[i];
-        const right = lastRow[(i + 1) % w];
-        newRow[i] = getNextState(left, center, right, ruleBinary);
-      }
-      currentGrid = [...currentGrid, newRow];
-    }
-    gridRef.current = currentGrid;
-    setGrid(currentGrid);
-    setIsPlaying(false);
-  }, [ruleBinary, width, height]);
 
   useEffect(() => {
     initializeGrid();
@@ -91,8 +82,7 @@ export default function CellularAutomataExplorer() {
 
   // Animation loop using useAnimationFrame hook
   const animationCallback = useCallback(() => {
-    const canContinue = computeNextGeneration();
-    if (!canContinue) setIsPlaying(false);
+    computeNextGeneration();
   }, [computeNextGeneration]);
 
   useAnimationFrame({
@@ -107,8 +97,6 @@ export default function CellularAutomataExplorer() {
     if (!canvas || grid.length === 0) return;
     
     const ctx = canvas.getContext('2d');
-    const w = Math.floor(width / cellSize);
-    const maxGen = Math.floor(height / cellSize);
     
     canvas.width = width;
     canvas.height = height;
@@ -116,16 +104,14 @@ export default function CellularAutomataExplorer() {
     ctx.fillStyle = '#09090b';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
+    ctx.fillStyle = classInfo.color;
     grid.forEach((row, gen) => {
       row.forEach((cell, col) => {
         if (cell === 1) {
-          ctx.fillStyle = classInfo.color;
-          ctx.globalAlpha = 0.5 + 0.5 * (gen / maxGen);
           ctx.fillRect(col * cellSize, gen * cellSize, cellSize - 0.5, cellSize - 0.5);
         }
       });
     });
-    ctx.globalAlpha = 1;
   }, [grid, classInfo, width, height]);
 
   const changeRule = (delta) => {
@@ -181,7 +167,7 @@ export default function CellularAutomataExplorer() {
             value={rule}
             onChange={(e) => setRule(Math.min(255, Math.max(0, parseInt(e.target.value) || 0)))}
             onClick={() => setShowRuleGrid(!showRuleGrid)}
-            className="w-12 h-7 bg-zinc-800 border border-zinc-700 rounded px-2 text-center text-sm text-white font-mono focus:outline-none focus:border-zinc-500 cursor-pointer"
+            className="w-12 h-7 bg-zinc-800 border border-zinc-700 rounded px-2 text-center text-sm text-white font-mono focus:outline-none focus:border-zinc-500 cursor-pointer [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
           />
           <button
             onClick={() => changeRule(1)}
@@ -241,6 +227,20 @@ export default function CellularAutomataExplorer() {
               />
             </div>
           )}
+          
+          {/* Playback Controls */}
+          <div className="mt-3 pt-3 border-t border-zinc-800">
+            <PlaybackControls
+              isPlaying={isPlaying}
+              onPlayPause={() => setIsPlaying(!isPlaying)}
+              onReset={() => { initializeGrid(); setIsPlaying(true); }}
+              onStep={computeNextGeneration}
+              statusLabel="gen"
+              statusValue={generation}
+              variant="inline"
+              accent="zinc"
+            />
+          </div>
         </div>
       </GlassPanel>
 
@@ -305,18 +305,6 @@ export default function CellularAutomataExplorer() {
         </p>
       </GlassPanel>
 
-      {/* Playback Controls - Bottom Center */}
-      <PlaybackControls
-        isPlaying={isPlaying}
-        onPlayPause={() => setIsPlaying(!isPlaying)}
-        onReset={() => { initializeGrid(); setIsPlaying(true); }}
-        onStep={computeNextGeneration}
-        onComplete={runAll}
-        statusLabel="gen"
-        statusValue={grid.length}
-        variant="floating"
-        accent="zinc"
-      />
     </div>
   );
 }

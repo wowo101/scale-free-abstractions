@@ -103,3 +103,7 @@ The visualizations demonstrate:
 - **Fitness landscape topology** and search strategies
 - **Adaptive cycles** and resilience in complex systems
 - **Causal emergence** and effective information (when macro beats micro)
+
+## Planning
+
+See plan file at `~/.claude/plans/virtual-wiggling-sun.md` for detailed specs on upcoming visualizations.

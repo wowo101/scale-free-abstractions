@@ -1,22 +1,13 @@
 import React from 'react';
 import { GlassPanel } from '../../components/shared';
 
-export default function StrategyInfo({ onClose }) {
+export default function StrategyInfo() {
   return (
     <GlassPanel
-      position="bottom-right"
+      position="top-right"
       width={320}
       accent="indigo"
       title="Navigation Strategies"
-      collapsible={false}
-      headerActions={
-        <button 
-          onClick={onClose} 
-          className="text-slate-500 hover:text-slate-300 text-xs"
-        >
-          ✕
-        </button>
-      }
     >
       <div className="space-y-4 text-xs text-slate-400 mt-3">
         <div>

@@ -22,7 +22,6 @@ export default function AttractorExplorer() {
   const [autoRotate, setAutoRotate] = useState(true);
   const [paused, setPaused] = useState(false);
   const [info, setInfo] = useState({ type: 'analyzing', confidence: 0 });
-  const [showGuide, setShowGuide] = useState(true);
   const [hoveredParam, setHoveredParam] = useState(null);
   const [tooltipY, setTooltipY] = useState(0);
   
@@ -257,34 +256,36 @@ export default function AttractorExplorer() {
         <div className="h-px bg-white/10 my-3.5" />
         
         {/* Control buttons */}
-        <ButtonGroup gap="sm">
-          <Button
-            variant="secondary"
-            active={autoRotate}
-            onClick={() => setAutoRotate(!autoRotate)}
-            accent="green"
-            size="sm"
-          >
-            Auto
-          </Button>
-          <Button
-            variant="secondary"
-            active={paused}
-            onClick={() => setPaused(!paused)}
-            accent="green"
-            size="sm"
-          >
-            {paused ? 'Play' : 'Pause'}
-          </Button>
-          <Button
-            variant="secondary"
-            onClick={reset}
-            accent="green"
-            size="sm"
-          >
-            Reset
-          </Button>
-        </ButtonGroup>
+        <div className="flex justify-center">
+          <ButtonGroup gap="sm">
+            <Button
+              variant="secondary"
+              active={autoRotate}
+              onClick={() => setAutoRotate(!autoRotate)}
+              accent="green"
+              size="sm"
+            >
+              Auto
+            </Button>
+            <Button
+              variant="secondary"
+              active={paused}
+              onClick={() => setPaused(!paused)}
+              accent="green"
+              size="sm"
+            >
+              {paused ? 'Play' : 'Pause'}
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={reset}
+              accent="green"
+              size="sm"
+            >
+              Reset
+            </Button>
+          </ButtonGroup>
+        </div>
       </GlassPanel>
       
       {/* Parameter Tooltip */}
@@ -310,7 +311,7 @@ export default function AttractorExplorer() {
       {/* Type indicator */}
       <div 
         className="absolute top-5 glass-panel px-3 py-1.5 flex items-center gap-2"
-        style={{ right: showGuide ? 300 : 20, transition: 'right 0.3s' }}
+        style={{ right: 300 }}
       >
         <div 
           className="w-2.5 h-2.5 rounded-full"
@@ -325,22 +326,7 @@ export default function AttractorExplorer() {
       </div>
       
       {/* Guide panel */}
-      {showGuide && (
-        <GuidePanel 
-          attractorType={info.type} 
-          onClose={() => setShowGuide(false)} 
-        />
-      )}
-      
-      {/* Show guide button */}
-      {!showGuide && (
-        <button 
-          onClick={() => setShowGuide(true)}
-          className="absolute right-5 bottom-14 px-3 py-1.5 glass-panel text-[11px] text-slate-400 hover:text-slate-200 transition"
-        >
-          Show Guide
-        </button>
-      )}
+      <GuidePanel attractorType={info.type} />
     </div>
   );
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import { GlassPanel } from '../../components/shared';
 import { EXPLANATIONS, ATTRACTOR_COLORS } from './data';
 
-export default function GuidePanel({ attractorType, onClose }) {
+export default function GuidePanel({ attractorType }) {
   const exp = EXPLANATIONS[attractorType] || EXPLANATIONS.analyzing;
   const dotColor = ATTRACTOR_COLORS[attractorType] || ATTRACTOR_COLORS.analyzing;
   
@@ -12,14 +12,6 @@ export default function GuidePanel({ attractorType, onClose }) {
       width={260}
       accent="green"
       title="Understanding Attractors"
-      headerActions={
-        <button 
-          onClick={onClose}
-          className="text-slate-500 hover:text-slate-300 text-base leading-none"
-        >
-          ×
-        </button>
-      }
     >
       <div 
         className="bg-[#12121f] p-3.5 rounded-lg border border-white/10 mt-3"

@@ -67,7 +67,7 @@ const TABS = [
   { key: 'coarsegraining', label: 'Grouping' },
 ];
 
-export default function GuidePanel({ onClose }) {
+export default function GuidePanel() {
   const [activeTab, setActiveTab] = useState('emergence');
   
   const explanation = EXPLANATIONS[activeTab];
@@ -78,16 +78,8 @@ export default function GuidePanel({ onClose }) {
       width={280}
       accent="amber"
       style={{ background: 'rgba(15, 15, 10, 0.95)' }}
+      title="Guide"
     >
-      <div className="flex items-center justify-between mb-3">
-        <span className="text-sm font-semibold text-amber-400">Guide</span>
-        <button
-          onClick={onClose}
-          className="text-slate-500 hover:text-slate-300 text-lg leading-none"
-        >
-          ×
-        </button>
-      </div>
       
       {/* Tabs */}
       <div className="flex gap-1 mb-4 p-0.5 bg-white/5 rounded-lg">

@@ -423,36 +423,9 @@ export default function AdaptiveCycleExplorer() {
           predetermined path but an <em className="text-teal-400/80">attractor pattern</em> that emerges 
           as the system moves through its state space.
         </div>
-      </GlassPanel>
-      
-      {/* Right Panel */}
-      <GlassPanel
-        position="top-right"
-        width={260}
-        accent="teal"
-        style={{ background: 'rgba(10, 15, 16, 0.95)' }}
-      >
-        <div className="text-[10px] uppercase tracking-wider text-slate-500 mb-3">
-          Cycle Phases
-        </div>
-        <PhaseList currentPhase={state.phase} />
         
-        <div className="h-px bg-white/10 my-3" />
-        
-        <div className="text-[10px] text-slate-500 leading-relaxed mb-3">
-          <strong className="text-slate-400">Front loop</strong> (r→K): Slow growth and accumulation
-          <br />
-          <strong className="text-slate-400">Back loop</strong> (Ω→α): Rapid release and renewal
-        </div>
-        
-        <div className="h-px bg-white/10 my-3" />
-        
-        <AttractorBasin metrics={metrics} />
-      </GlassPanel>
-      
-      {/* Floating Play Controls */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
-        <div className="bg-black/60 backdrop-blur-md rounded-xl px-4 py-3 border border-white/10">
+        {/* Controls */}
+        <div className="mt-3 pt-3 border-t border-white/10">
           <div className="flex justify-center">
             <ButtonGroup gap="sm">
               <Button
@@ -483,10 +456,37 @@ export default function AdaptiveCycleExplorer() {
               </Button>
             </ButtonGroup>
           </div>
-          <div className="text-[10px] text-slate-500 text-center mt-2">
-            Drag to rotate • Auto-rotates when playing
-          </div>
         </div>
+      </GlassPanel>
+      
+      {/* Right Panel */}
+      <GlassPanel
+        position="top-right"
+        width={260}
+        accent="teal"
+        style={{ background: 'rgba(10, 15, 16, 0.95)' }}
+      >
+        <div className="text-[10px] uppercase tracking-wider text-slate-500 mb-3">
+          Cycle Phases
+        </div>
+        <PhaseList currentPhase={state.phase} />
+        
+        <div className="h-px bg-white/10 my-3" />
+        
+        <div className="text-[10px] text-slate-500 leading-relaxed mb-3">
+          <strong className="text-slate-400">Front loop</strong> (r→K): Slow growth and accumulation
+          <br />
+          <strong className="text-slate-400">Back loop</strong> (Ω→α): Rapid release and renewal
+        </div>
+        
+        <div className="h-px bg-white/10 my-3" />
+        
+        <AttractorBasin metrics={metrics} />
+      </GlassPanel>
+      
+      {/* Hint */}
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-[10px] text-slate-600">
+        Drag to rotate • Auto-rotates when playing
       </div>
     </div>
   );

@@ -17,7 +17,6 @@ export default function CriticalitySimulation() {
   
   // UI state
   const [isRunning, setIsRunning] = useState(true);
-  const [showGuide, setShowGuide] = useState(false);
   const [showMoreStats, setShowMoreStats] = useState(false);
   const [activeTooltip, setActiveTooltip] = useState(null);
   const [tooltipY, setTooltipY] = useState(0);
@@ -284,30 +283,12 @@ export default function CriticalitySimulation() {
         width={240}
         accent="cyan"
       >
-        {/* Title row with info icon */}
-        <div className="flex justify-between items-start mb-3">
-          <div className="flex items-center gap-2">
-            <BackButton />
-            <div>
-              <h1 className="text-base font-semibold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
-                Sandpile Criticality
-              </h1>
-              <p className="text-[10px] text-slate-500 mt-0.5">
-                Self-organized criticality
-              </p>
-            </div>
-          </div>
-          <button
-            onClick={() => setShowGuide(!showGuide)}
-            className={`w-6 h-6 rounded-full border flex items-center justify-center text-xs font-semibold italic font-serif transition-all ${
-              showGuide 
-                ? 'border-cyan-400/50 bg-cyan-400/20 text-cyan-400' 
-                : 'border-cyan-400/30 text-cyan-400 hover:bg-cyan-400/10'
-            }`}
-            title="Show phase guide"
-          >
-            i
-          </button>
+        {/* Title row */}
+        <div className="flex items-center gap-2 mb-3">
+          <BackButton />
+          <h1 className="text-sm font-medium text-cyan-400">
+            Self-organised Criticality
+          </h1>
         </div>
 
         {/* System State Indicator */}
@@ -517,7 +498,7 @@ export default function CriticalitySimulation() {
       </div>
 
       {/* Phase Guide Panel */}
-      {showGuide && <PhaseGuide onClose={() => setShowGuide(false)} />}
+      <PhaseGuide />
     </div>
   );
 }
