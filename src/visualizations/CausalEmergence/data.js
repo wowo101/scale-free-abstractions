@@ -2,7 +2,7 @@
 export const PRESETS = {
   noisyCopy: {
     name: 'Noisy Copy',
-    description: 'Two elements that copy each other with noise. Macro grouping reduces noise.',
+    description: 'Two bits that tend to stay the same (00 or 11) or different (01 or 10). Like a noisy communication channel—each bit occasionally flips. Grouping into "same" vs "different" reduces noise and increases predictability.',
     elements: 4,
     states: ['00', '01', '10', '11'],
     // TPM: rows = current state, cols = next state
@@ -18,7 +18,7 @@ export const PRESETS = {
   },
   xorGate: {
     name: 'XOR Gate',
-    description: 'High degeneracy at micro level - multiple inputs produce same output.',
+    description: 'A logical XOR: output parity depends on input parity. States 00 and 11 (even parity) behave similarly, as do 01 and 10 (odd parity). Grouping by parity reveals the hidden structure and reduces degeneracy.',
     elements: 4,
     states: ['00', '01', '10', '11'],
     // XOR: output depends only on parity
@@ -33,7 +33,7 @@ export const PRESETS = {
   },
   majority: {
     name: 'Majority Rule',
-    description: 'Three-element majority vote. Macro = consensus level.',
+    description: 'Three voters where majority wins. Individual votes are noisy, but the group tends toward consensus. Grouping by "number of 1s" (0, 1, 2, or 3) captures the collective behavior better than tracking each voter.',
     elements: 8,
     states: ['000', '001', '010', '011', '100', '101', '110', '111'],
     tpm: [
@@ -51,7 +51,7 @@ export const PRESETS = {
   },
   deterministic: {
     name: 'Deterministic',
-    description: 'Perfect determinism at micro level. No emergence possible.',
+    description: 'A perfectly predictable system: each state always leads to exactly one next state. Since there\'s no noise to reduce, coarse-graining can only lose information—no emergence here.',
     elements: 4,
     states: ['00', '01', '10', '11'],
     tpm: [
@@ -65,7 +65,7 @@ export const PRESETS = {
   },
   degenerate: {
     name: 'Degenerate',
-    description: 'Multiple micro states lead to the same outcome. High degeneracy.',
+    description: 'A "funnel" system where different inputs converge to the same outputs. States 00 and 01 both lead to the "low" attractor; 10 and 11 lead to "high". Grouping by attractor basin eliminates this many-to-one redundancy.',
     elements: 4,
     states: ['00', '01', '10', '11'],
     tpm: [
@@ -78,27 +78,29 @@ export const PRESETS = {
     macroLabels: ['Low', 'High'],
   },
   emergent: {
-    name: 'Emergent ✓',
-    description: 'Highly noisy micro states but deterministic macro transitions. True emergence!',
-    elements: 4,
-    states: ['00', '01', '10', '11'],
-    // Key: micro is very noisy (high entropy per row = low determinism)
-    // But within-group noise cancels out at macro level
+    name: 'Neural Sync ✓',
+    description: 'Three neurons that synchronize through local interactions. Individual firing is noisy, but the population exhibits clear oscillation between synchronized states. Grouping by "activation level" (0, 1-2, 3 active) reveals emergent rhythms.',
+    elements: 8,
+    states: ['000', '001', '010', '100', '011', '101', '110', '111'],
+    // 8-state system: neurons tend toward synchrony (all-on or all-off)
+    // States with 0 or 3 active neurons are stable attractors
+    // States with 1 or 2 active are unstable, transition toward attractors
     tpm: [
-      [0.25, 0.25, 0.25, 0.25],  // 00 → uniform (max noise!)
-      [0.25, 0.25, 0.25, 0.25],  // 01 → uniform 
-      [0.25, 0.25, 0.25, 0.25],  // 10 → uniform
-      [0.25, 0.25, 0.25, 0.25],  // 11 → uniform
+      [0.80, 0.05, 0.05, 0.05, 0.02, 0.02, 0.01, 0.00], // 000 → stable off
+      [0.30, 0.15, 0.10, 0.10, 0.15, 0.10, 0.05, 0.05], // 001 → drifts toward 000 or 111
+      [0.30, 0.10, 0.15, 0.10, 0.15, 0.05, 0.10, 0.05], // 010 → drifts
+      [0.30, 0.10, 0.10, 0.15, 0.05, 0.15, 0.10, 0.05], // 100 → drifts
+      [0.05, 0.10, 0.10, 0.05, 0.15, 0.15, 0.10, 0.30], // 011 → drifts toward 111
+      [0.05, 0.10, 0.05, 0.10, 0.15, 0.15, 0.10, 0.30], // 101 → drifts toward 111
+      [0.05, 0.05, 0.10, 0.10, 0.10, 0.10, 0.20, 0.30], // 110 → drifts toward 111
+      [0.00, 0.01, 0.02, 0.02, 0.05, 0.05, 0.05, 0.80], // 111 → stable on
     ],
-    // But when we group: {00,01} and {10,11}, 
-    // macro becomes: each macro state → 50% stay, 50% switch
-    // Actually this will also be uniform... need different approach
-    suggestedGrouping: [[0, 1], [2, 3]],
-    macroLabels: ['A', 'B'],
+    suggestedGrouping: [[0], [1, 2, 3], [4, 5, 6], [7]], // By activation count: 0, 1, 2, 3
+    macroLabels: ['Off', 'Low', 'High', 'On'],
   },
   emergence2: {
     name: 'Flock ✓',
-    description: 'Individual birds move randomly but flock moves predictably. CE > 0!',
+    description: 'Two birds where each moves somewhat randomly, but the flock has a predictable direction. Pure left (LL) stays left-ish, pure right (RR) stays right-ish, mixed states are unstable. The "flock direction" macro variable is more predictive than individual positions.',
     elements: 4,
     states: ['LL', 'LR', 'RL', 'RR'],
     // Two birds: each bit = direction. Individually noisy, but group behavior is deterministic
@@ -143,39 +145,35 @@ export const EXPLANATIONS = {
 
 **How is this possible?**
 Coarse-graining can:
-• Reduce noise (many noisy micro states → one stable macro state)
-• Eliminate degeneracy (many-to-one at micro → one-to-one at macro)
-• Increase determinism (averaged behavior is more predictable)
+- Reduce noise (noisy micro → stable macro)
+- Eliminate degeneracy (many-to-one → one-to-one)
+- Increase determinism (averaging makes behavior predictable)
 
-**The key insight:**
-Emergence isn't just about convenience—the macro level can be *more real* in a precise, quantifiable sense.`,
+When CE > 0, the macro level isn't just convenient—it's *more causally accurate* than the micro level.`,
   },
   ei: {
     title: 'Effective Information',
-    content: `EI measures a system's causal power—how much the current state determines the next state.
+    content: `Effective Information (EI) measures causal power—how much the current state determines the next.
 
-**Formula:** EI = Effectiveness × log₂(n)
+**Formula:** EI = H(output) - H(output|input)
 
-**Effectiveness** = Determinism - Degeneracy
-• Determinism: How reliably states lead to specific outcomes
-• Degeneracy: How many states lead to the same outcome
+Where:
+- H(output): entropy of possible next states
+- H(output|input): uncertainty after knowing input
 
-**Why it matters:**
-If EI(macro) > EI(micro), the macro description captures more causal structure. The "higher level" is doing real explanatory work.`,
+Higher EI means stronger cause-effect relationships. When EI(macro) > EI(micro), the higher level reveals causal structure hidden by micro-level noise.`,
   },
   coarsegraining: {
     title: 'Coarse-Graining',
     content: `Coarse-graining groups micro states into macro states.
 
-**Good coarse-graining:**
-• Groups states with similar behavior
-• Reduces noise while preserving signal
-• Creates more deterministic macro dynamics
+**Good groupings:**
+- Group states with similar transitions
+- Reduce noise while preserving signal
+- Create more deterministic dynamics
 
-**Example:**
-If states A and B both lead to C with noise, grouping {A,B} might give a macro state that leads to C with less noise.
+**Example:** If A and B both noisily lead to C, grouping {A,B} can make the macro transition cleaner.
 
-**The goal:**
-Find the grouping that maximizes EI at the macro level.`,
+The optimal grouping maximizes EI at the macro level.`,
   },
 };

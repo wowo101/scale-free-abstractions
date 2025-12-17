@@ -40,9 +40,10 @@ src/
 │   └── colors.js         # Shared color utilities (viridis, getColor)
 ├── visualizations/       # Visualization modules
 │   ├── AdaptiveCycle/
+│   ├── CausalEmergence/
 │   ├── CellularAutomata/
-│   ├── DynamicalSystems/
 │   ├── Criticality/
+│   ├── DynamicalSystems/
 │   └── FitnessLandscape/
 ├── pages/
 │   └── Gallery.jsx       # Main gallery landing page
@@ -74,6 +75,7 @@ npm run preview    # Preview production build
 3. **Self-Organized Criticality** (`/criticality`) - BTW sandpile model with power-law avalanche distributions
 4. **Fitness Landscapes** (`/fitness-landscape`) - Configurable 3D/2D landscapes for exploring optimization topology
 5. **Adaptive Cycle** (`/adaptive-cycle`) - Holling's adaptive cycle (r→K→Ω→α) with bundled attractor trajectories
+6. **Causal Emergence** (`/causal-emergence`) - Interactive calculator showing when macro-level descriptions have more causal power than micro-level (CE = EI_macro - EI_micro)
 
 ## Design System
 
@@ -100,7 +102,4 @@ The visualizations demonstrate:
 - **Attractor dynamics** in nonlinear systems
 - **Fitness landscape topology** and search strategies
 - **Adaptive cycles** and resilience in complex systems
-
-## Planning
-
-See plan file at `~/.claude/plans/virtual-wiggling-sun.md` for detailed specs on upcoming visualizations.
+- **Causal emergence** and effective information (when macro beats micro)

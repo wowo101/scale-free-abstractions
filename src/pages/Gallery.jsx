@@ -48,18 +48,18 @@ function RevealSection({ children, className = '', delay = 0 }) {
 }
 
 // Card for the visualization row - no icons, just gradient preview
-function VisualizationCard({ title, subtitle, accent, route, gradient }) {
+function VisualizationCard({ title, preview, accent, route, gradient }) {
   const accentColors = getAccent(accent);
 
   return (
     <Link
       to={route}
-      className="group block glass-panel p-3 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:shadow-black/20"
+      className="group block glass-panel p-4 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:shadow-black/20"
       style={{ borderColor: 'rgba(255,255,255,0.08)' }}
     >
-      {/* Gradient preview - no icon */}
+      {/* Gradient preview - 2:1 aspect ratio */}
       <div
-        className={`h-16 rounded-md mb-2.5 bg-gradient-to-br ${gradient} opacity-70 group-hover:opacity-100 transition-opacity relative overflow-hidden`}
+        className={`aspect-[2/1] rounded-md mb-3 bg-gradient-to-br ${gradient} opacity-70 group-hover:opacity-100 transition-opacity relative overflow-hidden`}
       >
         <div className="absolute inset-0 opacity-15">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.15)_1px,transparent_1px)] bg-[length:12px_12px]" />
@@ -68,22 +68,22 @@ function VisualizationCard({ title, subtitle, accent, route, gradient }) {
 
       {/* Content */}
       <h3
-        className="text-xs font-semibold mb-0.5 group-hover:text-white transition-colors"
+        className="text-sm font-semibold mb-1 group-hover:text-white transition-colors"
         style={{ color: accentColors.primary }}
       >
         {title}
       </h3>
-      <p className="text-[10px] text-slate-500 leading-snug">{subtitle}</p>
+      <p className="text-xs text-slate-500 leading-snug">{preview}</p>
     </Link>
   );
 }
 
-// Card row component to avoid duplication - 3x3 grid
+// Card row component - 2x3 grid for six tools
 function CardRow({ className = '' }) {
   return (
     <div className={`max-w-4xl mx-auto px-6 py-4 ${className}`}>
       <div className="grid grid-cols-3 gap-3">
-        {visualizations.slice(0, 9).map((viz, index) => (
+        {visualizations.slice(0, 6).map((viz, index) => (
           <div
             key={viz.id}
             className="transition-all duration-500 ease-out"
@@ -102,30 +102,41 @@ function CardRow({ className = '' }) {
 export default function Gallery() {
   // Card positioning state: 'normal' | 'sticky' | 'anchored'
   const [cardMode, setCardMode] = useState('normal');
-  const [anchorOffset, setAnchorOffset] = useState(0);
+  const [cardHeight, setCardHeight] = useState(0);
   const topSentinelRef = useRef(null);
-  const anchorSentinelRef = useRef(null);
+  const landingZoneRef = useRef(null);
   const cardRowRef = useRef(null);
-  const cardRowHeight = 120;
+
+  // Measure and store card height whenever it's rendered
+  useEffect(() => {
+    const measure = () => {
+      if (cardRowRef.current) {
+        const height = cardRowRef.current.offsetHeight;
+        if (height > 0) setCardHeight(height);
+      }
+    };
+    
+    measure();
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
+  }, [cardMode]); // Re-measure when mode changes
 
   useEffect(() => {
     const handleScroll = () => {
-      if (!topSentinelRef.current || !anchorSentinelRef.current) return;
+      if (!topSentinelRef.current || !landingZoneRef.current) return;
       
       const topRect = topSentinelRef.current.getBoundingClientRect();
-      const anchorRect = anchorSentinelRef.current.getBoundingClientRect();
+      const landingRect = landingZoneRef.current.getBoundingClientRect();
       
       if (topRect.top >= 0) {
-        // Haven't scrolled past the cards yet
+        // Haven't scrolled past the cards yet - cards in original position
         setCardMode('normal');
-      } else if (anchorRect.top > cardRowHeight) {
-        // Scrolled past cards but not to anchor yet - sticky mode
+      } else if (landingRect.top > 0) {
+        // Scrolled past cards but landing zone not at top yet - sticky mode
         setCardMode('sticky');
       } else {
-        // Past anchor - cards should be anchored and scroll with content
+        // Landing zone top has reached viewport top - cards anchor into landing zone
         setCardMode('anchored');
-        // Calculate how far past the anchor we are (negative value)
-        setAnchorOffset(anchorRect.top - cardRowHeight);
       }
     };
 
@@ -167,20 +178,25 @@ export default function Gallery() {
       {/* Top sentinel - when this leaves viewport, cards become sticky */}
       <div ref={topSentinelRef} className="h-0" />
 
-      {/* Card Row with three modes: normal (in flow), sticky (fixed), anchored (fixed but scrolls up) */}
-      {/* Placeholder to maintain document flow when cards are fixed */}
-      {cardMode !== 'normal' && <div style={{ height: cardRowHeight }} />}
+      {/* Card Row - three modes: normal (in flow), sticky (fixed at top), anchored (in landing zone) */}
+      {/* When not in normal mode, show placeholder to maintain document flow */}
+      {cardMode !== 'normal' && (
+        <div style={{ height: cardHeight }} />
+      )}
       
-      <div
-        ref={cardRowRef}
-        className="z-50 left-0 right-0"
-        style={{
-          position: cardMode === 'normal' ? 'relative' : 'fixed',
-          top: cardMode === 'anchored' ? anchorOffset : 0,
-        }}
-      >
-        <CardRow />
-      </div>
+      {/* Cards - either in normal position, fixed at top, or inside landing zone */}
+      {cardMode !== 'anchored' && (
+        <div
+          ref={cardRowRef}
+          className="z-50 left-0 right-0"
+          style={{
+            position: cardMode === 'normal' ? 'relative' : 'fixed',
+            top: 0,
+          }}
+        >
+          <CardRow />
+        </div>
+      )}
 
       {/* Scroll content */}
       <main className="relative">
@@ -207,24 +223,35 @@ export default function Gallery() {
                   />
                 </RevealSection>
 
-                {/* Anchor sentinel after Learning to See */}
-                {isLastSection && (
-                  <div ref={anchorSentinelRef} className="h-0 mt-8" />
-                )}
+
               </div>
             );
           })}
         </div>
 
+        {/* Landing zone for cards - they anchor here when scrolled to */}
+        <div 
+          ref={landingZoneRef}
+          className="py-8"
+        >
+          {cardMode === 'anchored' ? (
+            <div ref={cardRowRef}>
+              <CardRow />
+            </div>
+          ) : (
+            <div style={{ height: cardHeight }} />
+          )}
+        </div>
+
         {/* Theoretical Framework Section */}
-        <section className="py-24 border-t border-white/5">
+        <section className="pt-8 pb-24 border-t border-white/5">
           <div className="max-w-4xl mx-auto px-8">
             <RevealSection>
               <h2 className="text-3xl font-bold text-center mb-4 bg-gradient-to-r from-cyan-400 to-indigo-400 text-transparent bg-clip-text">
                 The Mathematical Architecture
               </h2>
               <p className="text-center text-slate-500 mb-16 max-w-xl mx-auto">
-                Six interconnected layers describe what it means to exist—not as static substance but as ongoing process.
+                Six interconnected layers describe what it means to exist—not as static substance but as ongoing process. The six tools above illuminate different aspects of this architecture.
               </p>
             </RevealSection>
 
